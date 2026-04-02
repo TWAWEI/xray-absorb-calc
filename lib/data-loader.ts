@@ -22,26 +22,26 @@ export async function loadElements(): Promise<readonly ElementData[]> {
   if (elementsCache === null) {
     elementsCache = await fetchJson<ElementData[]>('/data/elements.json')
   }
-  return elementsCache
+  return elementsCache!
 }
 
 export async function loadEdges(): Promise<Readonly<Record<string, readonly AbsorptionEdge[]>>> {
   if (edgesCache === null) {
     edgesCache = await fetchJson('/data/edges.json')
   }
-  return edgesCache
+  return edgesCache!
 }
 
 export async function loadFluorescence(): Promise<Readonly<Record<string, readonly FluorescenceLine[]>>> {
   if (fluorescenceCache === null) {
     fluorescenceCache = await fetchJson('/data/fluorescence.json')
   }
-  return fluorescenceCache
+  return fluorescenceCache!
 }
 
 export async function loadMuData(): Promise<Readonly<Record<string, ElementMuData>>> {
   if (muDataCache === null) {
     muDataCache = await fetchJson('/data/mu-data.json')
   }
-  return muDataCache
+  return muDataCache!
 }

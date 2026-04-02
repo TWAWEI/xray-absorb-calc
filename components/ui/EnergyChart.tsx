@@ -47,8 +47,8 @@ export function EnergyChart({ data, edges, currentEnergy_eV }: EnergyChartProps)
           />
           <Tooltip
             contentStyle={{ backgroundColor: '#1a1a2e', border: '1px solid #333' }}
-            formatter={(value: number) => [value.toFixed(4), 'mu/rho']}
-            labelFormatter={(label: number) => `${label.toFixed(1)} eV`}
+            formatter={(value) => [Number(value).toFixed(4), 'mu/rho']}
+            labelFormatter={(label) => `${Number(label).toFixed(1)} eV`}
           />
           <Line
             type="monotone"

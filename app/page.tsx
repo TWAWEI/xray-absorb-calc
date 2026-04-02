@@ -2,6 +2,9 @@
 
 import { useState } from 'react'
 import { AbsorptionTab } from '@/components/tabs/AbsorptionTab'
+import { EdgeLookupTab } from '@/components/tabs/EdgeLookupTab'
+import { FluorescenceTab } from '@/components/tabs/FluorescenceTab'
+import { PeriodicTableTab } from '@/components/tabs/PeriodicTableTab'
 
 const TABS = ['Absorption', 'Edge Lookup', 'Fluorescence', 'Periodic Table'] as const
 type Tab = typeof TABS[number]
@@ -28,9 +31,9 @@ export default function Home() {
       </div>
       <div className="p-6">
         {activeTab === 'Absorption' && <AbsorptionTab />}
-        {activeTab !== 'Absorption' && (
-          <p className="text-gray-500">Tab: {activeTab} (coming soon)</p>
-        )}
+        {activeTab === 'Edge Lookup' && <EdgeLookupTab />}
+        {activeTab === 'Fluorescence' && <FluorescenceTab />}
+        {activeTab === 'Periodic Table' && <PeriodicTableTab />}
       </div>
     </div>
   )
