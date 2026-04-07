@@ -11,7 +11,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className="bg-white text-gray-900 min-h-screen">
         <nav className="border-b border-gray-200 px-6 py-3 flex items-center justify-between bg-gray-50">
-          <h1 className="text-lg font-bold text-gray-900">X-Ray Absorb Calculator</h1>
+          <h1 className="text-lg font-bold text-gray-900">X-Ray Absorption Calculator</h1>
           <div className="text-sm text-gray-500">
             <a href="https://github.com/TWAWEI/xray-absorb-calc" className="hover:text-gray-700">GitHub</a>
           </div>
