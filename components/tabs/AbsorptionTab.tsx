@@ -19,6 +19,8 @@ import { EnergyChart } from '@/components/ui/EnergyChart'
 import type { CalculationResult } from '@/lib/types'
 
 type EnergyUnit = 'keV' | 'Angstrom'
+type SizeMode = 'radius' | 'diameter'
+type DensityMode = 'packing' | 'density'
 
 interface FormState {
   readonly formula: string
@@ -26,8 +28,10 @@ interface FormState {
   readonly energyUnit: EnergyUnit
   readonly density: string
   readonly thickness: string
-  readonly packingFraction: string
-  readonly capillaryRadius: string
+  readonly sizeMode: SizeMode
+  readonly sizeValue: string
+  readonly densityMode: DensityMode
+  readonly densityModeValue: string
 }
 
 interface ChartDataPoint {
@@ -46,8 +50,10 @@ const INITIAL_FORM: FormState = {
   energyUnit: 'keV',
   density: '2.71',
   thickness: '0.8',
-  packingFraction: '60',
-  capillaryRadius: '0.4',
+  sizeMode: 'radius',
+  sizeValue: '0.4',
+  densityMode: 'packing',
+  densityModeValue: '0.6',
 }
 
 function updateForm(
@@ -147,15 +153,24 @@ export function AbsorptionTab() {
       // 9. Calculate absorption (flat slab)
       const absorption = calcAbsorption(mu, thickness)
 
-      // 10. Cylindrical geometry (packed density)
-      const packingFractionVal = parseFloat(form.packingFraction)
-      if (isNaN(packingFractionVal) || packingFractionVal < 0 || packingFractionVal > 100) {
-        throw new Error('Packing fraction must be between 0 and 100')
+      // 10. Cylindrical geometry
+      const densityModeValue = parseFloat(form.densityModeValue)
+      let packed_density: number
+      if (form.densityMode === 'packing') {
+        if (isNaN(densityModeValue) || densityModeValue < 0 || densityModeValue > 1) {
+          throw new Error('Packing fraction must be between 0 and 1')
+        }
+        packed_density = density * densityModeValue
+      } else {
+        if (isNaN(densityModeValue) || densityModeValue <= 0) {
+          throw new Error('Sample density must be positive')
+        }
+        packed_density = densityModeValue
       }
-      const packed_density = density * (packingFractionVal / 100)
       const mu_packed = mu_over_rho * packed_density
 
-      const capillaryRadius = parseFloat(form.capillaryRadius)
+      const sizeValue = parseFloat(form.sizeValue)
+      const capillaryRadius = form.sizeMode === 'diameter' ? sizeValue / 2 : sizeValue
       let cylindricalResult: { readonly muR: number; readonly transmission: number } | undefined
       if (!isNaN(capillaryRadius) && capillaryRadius > 0) {
         cylindricalResult = calcCylindricalAbsorption(mu_packed, capillaryRadius)
@@ -281,28 +296,48 @@ export function AbsorptionTab() {
 
         <div>
           <label className="block text-sm text-gray-400 mb-1">
-            Packing Fraction (%)
+            Sample Size Mode
           </label>
-          <input
-            type="text"
-            value={form.packingFraction}
-            onChange={(e) => handleChange('packingFraction', e.target.value)}
-            className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500"
-            placeholder="60"
-          />
+          <div className="flex gap-2">
+            <select
+              value={form.sizeMode}
+              onChange={(e) => handleChange('sizeMode', e.target.value)}
+              className="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-gray-300 focus:outline-none focus:border-blue-500"
+            >
+              <option value="radius">Radius (mm)</option>
+              <option value="diameter">Diameter (mm)</option>
+            </select>
+            <input
+              type="text"
+              value={form.sizeValue}
+              onChange={(e) => handleChange('sizeValue', e.target.value)}
+              className="flex-1 bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500"
+              placeholder="0.4"
+            />
+          </div>
         </div>
 
         <div>
           <label className="block text-sm text-gray-400 mb-1">
-            Capillary Radius (mm)
+            Sample Density or Packing Fraction
           </label>
-          <input
-            type="text"
-            value={form.capillaryRadius}
-            onChange={(e) => handleChange('capillaryRadius', e.target.value)}
-            className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500"
-            placeholder="0.4"
-          />
+          <div className="flex gap-2">
+            <select
+              value={form.densityMode}
+              onChange={(e) => handleChange('densityMode', e.target.value)}
+              className="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-gray-300 focus:outline-none focus:border-blue-500"
+            >
+              <option value="packing">Packing Fraction (0-1)</option>
+              <option value="density">Sample Density (g/cm³)</option>
+            </select>
+            <input
+              type="text"
+              value={form.densityModeValue}
+              onChange={(e) => handleChange('densityModeValue', e.target.value)}
+              className="flex-1 bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500"
+              placeholder={form.densityMode === 'packing' ? '0.6' : '1.63'}
+            />
+          </div>
         </div>
 
         <div>
