@@ -20,7 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <footer className="border-t border-gray-800 px-6 py-6 mt-12 text-sm text-gray-500">
           <div className="max-w-4xl">
             <h2 className="text-gray-400 font-semibold mb-2">References</h2>
-            <ul className="space-y-1 list-disc list-inside">
+            <ul className="space-y-1 list-disc list-outside ml-5">
               <li>
                 W.T. Elam, B.D. Ravel, and J.R. Sieber,{' '}
                 <em>A new atomic database for X-ray spectroscopic calculations</em>,{' '}
