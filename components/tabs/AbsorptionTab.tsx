@@ -337,19 +337,19 @@ export function AbsorptionTab() {
       <div className="flex-1 space-y-4">
         {result && (
           <>
-            <p className="text-xs text-gray-500 uppercase tracking-wider">
+            <p className="text-xs text-gray-500 tracking-wider">
               Material Properties
             </p>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               <ResultCard
-                label="mu/rho"
+                label="μ/ρ"
                 value={result.mu_over_rho.toFixed(4)}
-                unit="cm2/g"
+                unit="cm²/g"
               />
               <ResultCard
-                label="mu"
+                label="μ"
                 value={result.mu.toFixed(4)}
-                unit="cm-1"
+                unit="cm⁻¹"
               />
               <ResultCard
                 label="Optimal Thickness"
@@ -368,7 +368,7 @@ export function AbsorptionTab() {
             {result.packed_density !== undefined && result.muR !== undefined && result.cylindrical_transmission !== undefined && (
               <>
                 <div className="border-t border-gray-700 my-2" />
-                <p className="text-xs text-gray-500 uppercase tracking-wider">
+                <p className="text-xs text-gray-500 tracking-wider">
                   Capillary Geometry
                 </p>
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -381,6 +381,7 @@ export function AbsorptionTab() {
                     label="μ (packed)"
                     value={(result.mu_over_rho * result.packed_density).toFixed(4)}
                     unit="cm⁻¹"
+
                   />
                   <ResultCard
                     label="μR"
@@ -397,7 +398,7 @@ export function AbsorptionTab() {
             )}
 
             <div className="bg-gray-900 rounded-lg p-4">
-              <p className="text-xs text-gray-500 uppercase tracking-wider mb-2">
+              <p className="text-xs text-gray-500 tracking-wider mb-2">
                 Weight Fractions
               </p>
               <div className="flex flex-wrap gap-3">

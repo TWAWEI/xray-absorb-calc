@@ -24,8 +24,8 @@ interface EnergyChartProps {
 export function EnergyChart({ data, edges, currentEnergy_eV }: EnergyChartProps) {
   return (
     <div className="bg-gray-900 rounded-lg p-4">
-      <p className="text-xs text-gray-500 uppercase tracking-wider mb-2">
-        mu/rho vs Energy
+      <p className="text-xs text-gray-500 tracking-wider mb-2">
+        μ/ρ vs Energy
       </p>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={data as ChartDataPoint[]}>
@@ -43,11 +43,11 @@ export function EnergyChart({ data, edges, currentEnergy_eV }: EnergyChartProps)
             domain={['auto', 'auto']}
             stroke="#666"
             tickFormatter={(v: number) => v.toExponential(0)}
-            label={{ value: 'mu/rho (cm2/g)', angle: -90, position: 'insideLeft', fill: '#666' }}
+            label={{ value: 'μ/ρ (cm²/g)', angle: -90, position: 'insideLeft', fill: '#666' }}
           />
           <Tooltip
             contentStyle={{ backgroundColor: '#1a1a2e', border: '1px solid #333' }}
-            formatter={(value) => [Number(value).toFixed(4), 'mu/rho']}
+            formatter={(value) => [Number(value).toFixed(4), 'μ/ρ']}
             labelFormatter={(label) => `${Number(label).toFixed(1)} eV`}
           />
           <Line
