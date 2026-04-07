@@ -14,15 +14,15 @@ export default function Home() {
 
   return (
     <div>
-      <div className="flex gap-1 px-6 py-2 border-b border-gray-200 bg-white">
+      <div className="flex gap-1 px-6 py-2 border-b border-[#DFC1BF] bg-white">
         {TABS.map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
             className={`px-4 py-2 rounded-lg text-sm transition-colors ${
               activeTab === tab
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-100 text-gray-600 hover:text-gray-900 hover:bg-gray-200'
+                ? 'bg-[#4EBC97] text-white'
+                : 'bg-[#DFC1BF] text-gray-700 hover:text-gray-900 hover:bg-[#FCC0C7]'
             }`}
           >
             {tab}
