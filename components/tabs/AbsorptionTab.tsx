@@ -254,46 +254,54 @@ export function AbsorptionTab() {
           <label className="block text-sm text-[#5A6B63] mb-1">
             Sample Size Mode
           </label>
-          <div className="flex gap-2">
-            <select
-              value={form.sizeMode}
-              onChange={(e) => handleChange('sizeMode', e.target.value)}
-              className="bg-white border border-[#A5BFAF] rounded-lg px-3 py-2 text-sm text-gray-700 focus:outline-none focus:border-[#4EBC97]"
-            >
-              <option value="radius">Radius (mm)</option>
-              <option value="diameter">Diameter (mm)</option>
-            </select>
-            <input
-              type="text"
-              value={form.sizeValue}
-              onChange={(e) => handleChange('sizeValue', e.target.value)}
-              className="flex-1 w-full bg-white border border-[#A5BFAF] rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:border-[#4EBC97]"
-              placeholder="0.4"
-            />
-          </div>
+          <select
+            value={form.sizeMode}
+            onChange={(e) => handleChange('sizeMode', e.target.value)}
+            className="w-full bg-white border border-[#A5BFAF] rounded-lg px-3 py-2 text-sm text-gray-700 focus:outline-none focus:border-[#4EBC97]"
+          >
+            <option value="radius">Radius (mm)</option>
+            <option value="diameter">Thickness (Diameter in mm)</option>
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-sm text-[#5A6B63] mb-1">
+            {form.sizeMode === 'radius' ? 'Sample Radius (mm)' : 'Sample Thickness (mm)'}
+          </label>
+          <input
+            type="text"
+            value={form.sizeValue}
+            onChange={(e) => handleChange('sizeValue', e.target.value)}
+            className="w-full bg-white border border-[#A5BFAF] rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:border-[#4EBC97]"
+            placeholder={form.sizeMode === 'radius' ? '0.4' : '0.8'}
+          />
         </div>
 
         <div>
           <label className="block text-sm text-[#5A6B63] mb-1">
             Sample Density or Packing Fraction
           </label>
-          <div className="flex gap-2">
-            <select
-              value={form.densityMode}
-              onChange={(e) => handleChange('densityMode', e.target.value)}
-              className="bg-white border border-[#A5BFAF] rounded-lg px-3 py-2 text-sm text-gray-700 focus:outline-none focus:border-[#4EBC97]"
-            >
-              <option value="packing">Packing Fraction (0-1)</option>
-              <option value="density">Sample Density (g/cm³)</option>
-            </select>
-            <input
-              type="text"
-              value={form.densityModeValue}
-              onChange={(e) => handleChange('densityModeValue', e.target.value)}
-              className="flex-1 w-full bg-white border border-[#A5BFAF] rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:border-[#4EBC97]"
-              placeholder={form.densityMode === 'packing' ? '0.6' : '1.63'}
-            />
-          </div>
+          <select
+            value={form.densityMode}
+            onChange={(e) => handleChange('densityMode', e.target.value)}
+            className="w-full bg-white border border-[#A5BFAF] rounded-lg px-3 py-2 text-sm text-gray-700 focus:outline-none focus:border-[#4EBC97]"
+          >
+            <option value="packing">Packing Fraction (0-1)</option>
+            <option value="density">Sample Density (g/cm³)</option>
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-sm text-[#5A6B63] mb-1">
+            {form.densityMode === 'packing' ? 'Packing Fraction (0-1)' : 'Sample Density (g/cm³)'}
+          </label>
+          <input
+            type="text"
+            value={form.densityModeValue}
+            onChange={(e) => handleChange('densityModeValue', e.target.value)}
+            className="w-full bg-white border border-[#A5BFAF] rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:border-[#4EBC97]"
+            placeholder={form.densityMode === 'packing' ? '0.6' : '1.63'}
+          />
         </div>
 
         <button
