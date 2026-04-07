@@ -6,6 +6,7 @@ import {
   calcWeightFractions,
   calcCompoundMu,
   calcAbsorption,
+  calcCylindricalAbsorption,
 } from '@/lib/calculator'
 import { loadElements, loadMuData } from '@/lib/data-loader'
 import {
@@ -25,6 +26,8 @@ interface FormState {
   readonly energyUnit: EnergyUnit
   readonly density: string
   readonly thickness: string
+  readonly packingFraction: string
+  readonly capillaryRadius: string
 }
 
 interface ChartDataPoint {
@@ -43,6 +46,8 @@ const INITIAL_FORM: FormState = {
   energyUnit: 'keV',
   density: '2.71',
   thickness: '0.8',
+  packingFraction: '60',
+  capillaryRadius: '0.4',
 }
 
 function updateForm(
@@ -139,20 +144,37 @@ export function AbsorptionTab() {
       // 8. mu = mu/rho * density
       const mu = mu_over_rho * density
 
-      // 9. Calculate absorption
+      // 9. Calculate absorption (flat slab)
       const absorption = calcAbsorption(mu, thickness)
 
-      // 10. Set result
+      // 10. Cylindrical geometry (packed density)
+      const packingFractionVal = parseFloat(form.packingFraction)
+      if (isNaN(packingFractionVal) || packingFractionVal < 0 || packingFractionVal > 100) {
+        throw new Error('Packing fraction must be between 0 and 100')
+      }
+      const packed_density = density * (packingFractionVal / 100)
+      const mu_packed = mu_over_rho * packed_density
+
+      const capillaryRadius = parseFloat(form.capillaryRadius)
+      let cylindricalResult: { readonly muR: number; readonly transmission: number } | undefined
+      if (!isNaN(capillaryRadius) && capillaryRadius > 0) {
+        cylindricalResult = calcCylindricalAbsorption(mu_packed, capillaryRadius)
+      }
+
+      // 11. Set result
       const calcResult: CalculationResult = {
         mu_over_rho,
         mu,
         optimal_thickness_mm: absorption.optimal_thickness_mm,
         transmission: absorption.transmission,
         weight_fractions: fractions,
+        packed_density,
+        muR: cylindricalResult?.muR,
+        cylindrical_transmission: cylindricalResult?.transmission,
       }
       setResult(calcResult)
 
-      // 11. Generate chart data using first element's energy grid
+      // 12. Generate chart data using first element's energy grid
       const symbols = Object.keys(composition)
       const firstSymbol = symbols[0]
       const referenceData = muData[firstSymbol]
@@ -246,7 +268,7 @@ export function AbsorptionTab() {
 
         <div>
           <label className="block text-sm text-gray-400 mb-1">
-            Density (g/cm3)
+            Estimated Density (g/cm³)
           </label>
           <input
             type="text"
@@ -254,6 +276,32 @@ export function AbsorptionTab() {
             onChange={(e) => handleChange('density', e.target.value)}
             className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500"
             placeholder="2.71"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm text-gray-400 mb-1">
+            Packing Fraction (%)
+          </label>
+          <input
+            type="text"
+            value={form.packingFraction}
+            onChange={(e) => handleChange('packingFraction', e.target.value)}
+            className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500"
+            placeholder="60"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm text-gray-400 mb-1">
+            Capillary Radius (mm)
+          </label>
+          <input
+            type="text"
+            value={form.capillaryRadius}
+            onChange={(e) => handleChange('capillaryRadius', e.target.value)}
+            className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500"
+            placeholder="0.4"
           />
         </div>
 
@@ -289,6 +337,9 @@ export function AbsorptionTab() {
       <div className="flex-1 space-y-4">
         {result && (
           <>
+            <p className="text-xs text-gray-500 uppercase tracking-wider">
+              Material Properties
+            </p>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               <ResultCard
                 label="mu/rho"
@@ -307,12 +358,43 @@ export function AbsorptionTab() {
               />
               {result.transmission !== undefined && (
                 <ResultCard
-                  label="Transmission"
+                  label="Flat Transmission"
                   value={(result.transmission * 100).toFixed(2)}
                   unit="%"
                 />
               )}
             </div>
+
+            {result.packed_density !== undefined && result.muR !== undefined && result.cylindrical_transmission !== undefined && (
+              <>
+                <div className="border-t border-gray-700 my-2" />
+                <p className="text-xs text-gray-500 uppercase tracking-wider">
+                  Capillary Geometry
+                </p>
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                  <ResultCard
+                    label="Packed Density"
+                    value={result.packed_density.toFixed(3)}
+                    unit="g/cm³"
+                  />
+                  <ResultCard
+                    label="μ (packed)"
+                    value={(result.mu_over_rho * result.packed_density).toFixed(4)}
+                    unit="cm⁻¹"
+                  />
+                  <ResultCard
+                    label="μR"
+                    value={result.muR.toFixed(4)}
+                    unit=""
+                  />
+                  <ResultCard
+                    label="Cylindrical Transmission"
+                    value={(result.cylindrical_transmission * 100).toFixed(4)}
+                    unit="%"
+                  />
+                </div>
+              </>
+            )}
 
             <div className="bg-gray-900 rounded-lg p-4">
               <p className="text-xs text-gray-500 uppercase tracking-wider mb-2">

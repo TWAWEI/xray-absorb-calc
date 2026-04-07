@@ -45,4 +45,7 @@ export interface CalculationResult {
   readonly optimal_thickness_mm: number
   readonly transmission?: number
   readonly weight_fractions: Readonly<Record<string, number>>
+  readonly packed_density?: number
+  readonly muR?: number
+  readonly cylindrical_transmission?: number
 }

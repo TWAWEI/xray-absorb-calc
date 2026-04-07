@@ -4,6 +4,7 @@ import {
   interpolateMu,
   calcCompoundMu,
   calcAbsorption,
+  calcCylindricalAbsorption,
 } from '@/lib/calculator'
 import type { ElementMuData } from '@/lib/types'
 
@@ -94,5 +95,21 @@ describe('calcAbsorption', () => {
   it('calculates optimal thickness', () => {
     const result = calcAbsorption(5.0)
     expect(result.optimal_thickness_mm).toBeCloseTo(2.0, 3)
+  })
+})
+
+describe('calcCylindricalAbsorption', () => {
+  it('calculates muR and cylindrical transmission', () => {
+    // mu=50 cm^-1, R=0.5mm=0.05cm
+    // muR = 50 * 0.05 = 2.5, T = exp(-5) = 0.00674
+    const result = calcCylindricalAbsorption(50, 0.5)
+    expect(result.muR).toBeCloseTo(2.5, 3)
+    expect(result.transmission).toBeCloseTo(Math.exp(-5), 4)
+  })
+
+  it('returns muR=0 and transmission=1 for zero radius', () => {
+    const result = calcCylindricalAbsorption(100, 0)
+    expect(result.muR).toBe(0)
+    expect(result.transmission).toBe(1)
   })
 })

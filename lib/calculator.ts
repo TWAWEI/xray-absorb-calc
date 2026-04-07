@@ -121,3 +121,13 @@ export function calcAbsorption(
 
   return { optimal_thickness_mm }
 }
+
+export function calcCylindricalAbsorption(
+  mu_cm: number,
+  radius_mm: number,
+): { readonly muR: number; readonly transmission: number } {
+  const radius_cm = radius_mm / 10
+  const muR = mu_cm * radius_cm
+  const transmission = Math.exp(-2 * muR)
+  return { muR, transmission }
+}
