@@ -5,7 +5,6 @@ import { parseFormula, FormulaError } from '@/lib/formula-parser'
 import {
   calcWeightFractions,
   calcCompoundMu,
-  calcAbsorption,
   calcCylindricalAbsorption,
 } from '@/lib/calculator'
 import { loadElements, loadMuData } from '@/lib/data-loader'
@@ -28,7 +27,6 @@ interface FormState {
   readonly energyValue: string
   readonly energyUnit: EnergyUnit
   readonly density: string
-  readonly thickness: string
   readonly sizeMode: SizeMode
   readonly sizeValue: string
   readonly densityMode: DensityMode
@@ -40,7 +38,6 @@ const INITIAL_FORM: FormState = {
   energyValue: '30',
   energyUnit: 'keV',
   density: '2.71',
-  thickness: '0.8',
   sizeMode: 'radius',
   sizeValue: '0.4',
   densityMode: 'packing',
@@ -103,11 +100,6 @@ export function AbsorptionTab() {
         throw new Error('Density must be a positive number')
       }
 
-      const thickness = parseFloat(form.thickness)
-      if (isNaN(thickness) || thickness < 0) {
-        throw new Error('Thickness must be a non-negative number')
-      }
-
       const energy_eV = energy_keV * 1000
 
       // 4. Load data
@@ -141,10 +133,7 @@ export function AbsorptionTab() {
       // 8. mu = mu/rho * density
       const mu = mu_over_rho * density
 
-      // 9. Calculate absorption (flat slab)
-      const absorption = calcAbsorption(mu, thickness)
-
-      // 10. Cylindrical geometry
+      // 9. Cylindrical geometry
       const densityModeValue = parseFloat(form.densityModeValue)
       let packed_density: number
       if (form.densityMode === 'packing') {
@@ -171,8 +160,7 @@ export function AbsorptionTab() {
       const calcResult: CalculationResult = {
         mu_over_rho,
         mu,
-        optimal_thickness_mm: absorption.optimal_thickness_mm,
-        transmission: absorption.transmission,
+        optimal_thickness_mm: (1 / mu) * 10,
         weight_fractions: fractions,
         packed_density,
         muR: cylindricalResult?.muR,
@@ -308,19 +296,6 @@ export function AbsorptionTab() {
           </div>
         </div>
 
-        <div>
-          <label className="block text-sm text-[#5A6B63] mb-1">
-            Thickness (mm)
-          </label>
-          <input
-            type="text"
-            value={form.thickness}
-            onChange={(e) => handleChange('thickness', e.target.value)}
-            className="w-full w-full bg-white border border-[#A5BFAF] rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:border-[#4EBC97]"
-            placeholder="0.8"
-          />
-        </div>
-
         <button
           onClick={handleCalculate}
           disabled={loading}
@@ -354,18 +329,6 @@ export function AbsorptionTab() {
                 value={result.mu.toFixed(4)}
                 unit="cm⁻¹"
               />
-              <ResultCard
-                label="Optimal Thickness"
-                value={result.optimal_thickness_mm.toFixed(4)}
-                unit="mm"
-              />
-              {result.transmission !== undefined && (
-                <ResultCard
-                  label="Flat Transmission"
-                  value={(result.transmission * 100).toFixed(2)}
-                  unit="%"
-                />
-              )}
             </div>
 
             {result.packed_density !== undefined && result.muR !== undefined && result.cylindrical_transmission !== undefined && (
