@@ -14,7 +14,7 @@ export default function Home() {
 
   return (
     <div>
-      <div className="flex gap-1 px-6 py-2 border-b border-gray-800">
+      <div className="flex gap-1 px-6 py-2 border-b border-gray-200 bg-white">
         {TABS.map((tab) => (
           <button
             key={tab}
@@ -22,7 +22,7 @@ export default function Home() {
             className={`px-4 py-2 rounded-lg text-sm transition-colors ${
               activeTab === tab
                 ? 'bg-blue-600 text-white'
-                : 'bg-gray-900 text-gray-400 hover:text-gray-200'
+                : 'bg-gray-100 text-gray-600 hover:text-gray-900 hover:bg-gray-200'
             }`}
           >
             {tab}

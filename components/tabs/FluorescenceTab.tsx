@@ -26,11 +26,11 @@ export function FluorescenceTab() {
     <div className="space-y-6">
       <PeriodicTable onSelectElement={setSelectedElement} selectedElement={selectedElement} />
       {selectedElement && lines.length > 0 && (
-        <div className="bg-gray-900 rounded-lg p-4">
-          <h3 className="text-lg font-bold mb-3">{selectedElement} — Fluorescence Lines</h3>
+        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+          <h3 className="text-lg font-bold text-gray-900 mb-3">{selectedElement} — Fluorescence Lines</h3>
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-gray-500 border-b border-gray-800">
+              <tr className="text-gray-500 border-b border-gray-200">
                 <th className="text-left py-2">Line</th>
                 <th className="text-right py-2">Energy (eV)</th>
                 <th className="text-right py-2">Energy (keV)</th>
@@ -39,11 +39,11 @@ export function FluorescenceTab() {
             </thead>
             <tbody>
               {lines.map((line) => (
-                <tr key={line.line} className="border-b border-gray-800/50">
-                  <td className="py-2 font-mono">{line.line}</td>
-                  <td className="text-right font-mono">{line.energy_eV.toFixed(2)}</td>
-                  <td className="text-right font-mono">{(line.energy_eV / 1000).toFixed(4)}</td>
-                  <td className="text-right font-mono">{line.intensity.toFixed(4)}</td>
+                <tr key={line.line} className="border-b border-gray-100">
+                  <td className="py-2 font-mono text-gray-900">{line.line}</td>
+                  <td className="text-right font-mono text-gray-900">{line.energy_eV.toFixed(2)}</td>
+                  <td className="text-right font-mono text-gray-900">{(line.energy_eV / 1000).toFixed(4)}</td>
+                  <td className="text-right font-mono text-gray-900">{line.intensity.toFixed(4)}</td>
                 </tr>
               ))}
             </tbody>
