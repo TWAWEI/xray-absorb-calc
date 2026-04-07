@@ -57,4 +57,12 @@ describe('parseFormula', () => {
   it('throws on trailing characters', () => {
     expect(() => parseFormula('Fe2O3)')).toThrow()
   })
+
+  it('parses decimal coefficient (YBCO)', () => {
+    expect(parseFormula('YBa2Cu3O6.5')).toEqual({ Y: 1, Ba: 2, Cu: 3, O: 6.5 })
+  })
+
+  it('parses solid solution with decimal', () => {
+    expect(parseFormula('Ca0.5Sr0.5TiO3')).toEqual({ Ca: 0.5, Sr: 0.5, Ti: 1, O: 3 })
+  })
 })

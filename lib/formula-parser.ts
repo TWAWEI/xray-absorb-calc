@@ -124,14 +124,24 @@ function parseCount(
 ): { readonly value: number; readonly pos: number } {
   let numStr = ''
   let current = pos
+  let hasDot = false
 
-  while (current < formula.length && formula[current] >= '0' && formula[current] <= '9') {
-    numStr += formula[current]
-    current++
+  while (current < formula.length) {
+    const ch = formula[current]
+    if (ch >= '0' && ch <= '9') {
+      numStr += ch
+      current++
+    } else if (ch === '.' && !hasDot) {
+      hasDot = true
+      numStr += ch
+      current++
+    } else {
+      break
+    }
   }
 
   return {
-    value: numStr.length > 0 ? parseInt(numStr, 10) : 1,
+    value: numStr.length > 0 ? parseFloat(numStr) : 1,
     pos: current,
   }
 }
