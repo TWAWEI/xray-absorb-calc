@@ -94,8 +94,8 @@ export function EnergyChart({ data, elements, currentEnergy_keV }: AbsorptionCha
           <p className="text-sm font-medium text-gray-700 mb-2">
             muR vs Energy (keV)
           </p>
-          <ResponsiveContainer width="100%" height={320}>
-            <LineChart data={chartData}>
+          <ResponsiveContainer width="100%" height={350}>
+            <LineChart data={chartData} margin={{ bottom: 20 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#d1d5db" />
               <XAxis
                 dataKey={xDataKey}
@@ -104,7 +104,7 @@ export function EnergyChart({ data, elements, currentEnergy_keV }: AbsorptionCha
                 tickFormatter={xTickFormatter}
                 stroke="#374151"
                 tick={{ fill: '#374151', fontSize: 11 }}
-                label={{ value: 'Energy (keV)', position: 'insideBottom', offset: -5, fill: '#374151', fontSize: 12 }}
+                height={40}
               />
               <YAxis
                 type="number"
@@ -172,8 +172,8 @@ export function EnergyChart({ data, elements, currentEnergy_keV }: AbsorptionCha
           <p className="text-sm font-medium text-gray-700 mb-2">
             Transmission vs Energy (keV)
           </p>
-          <ResponsiveContainer width="100%" height={320}>
-            <LineChart data={chartData}>
+          <ResponsiveContainer width="100%" height={350}>
+            <LineChart data={chartData} margin={{ bottom: 20 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#d1d5db" />
               <XAxis
                 dataKey={xDataKey}
@@ -182,7 +182,7 @@ export function EnergyChart({ data, elements, currentEnergy_keV }: AbsorptionCha
                 tickFormatter={xTickFormatter}
                 stroke="#374151"
                 tick={{ fill: '#374151', fontSize: 11 }}
-                label={{ value: 'Energy (keV)', position: 'insideBottom', offset: -5, fill: '#374151', fontSize: 12 }}
+                height={40}
               />
               <YAxis
                 type="number"
