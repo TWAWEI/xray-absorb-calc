@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import { APP_VERSION } from '@/lib/version'
 
 export const metadata: Metadata = {
   title: 'X-Ray Absorption Calculator',
@@ -45,6 +46,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </li>
             </ul>
           </div>
+          <p className="mt-4 text-xs text-gray-400">v{APP_VERSION}</p>
         </footer>
       </body>
     </html>
