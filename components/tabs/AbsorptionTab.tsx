@@ -16,6 +16,7 @@ import {
 } from '@/lib/constants'
 import { ResultCard } from '@/components/ui/ResultCard'
 import { EnergyChart } from '@/components/ui/EnergyChart'
+import { buildPerElementChartData } from '@/lib/chart-data'
 import type { CalculationResult } from '@/lib/types'
 
 type EnergyUnit = 'keV' | 'Angstrom'
@@ -32,16 +33,6 @@ interface FormState {
   readonly sizeValue: string
   readonly densityMode: DensityMode
   readonly densityModeValue: string
-}
-
-interface ChartDataPoint {
-  readonly energy_eV: number
-  readonly mu_over_rho: number
-}
-
-interface ChartEdge {
-  readonly energy_eV: number
-  readonly label: string
 }
 
 const INITIAL_FORM: FormState = {
@@ -67,8 +58,8 @@ function updateForm(
 export function AbsorptionTab() {
   const [form, setForm] = useState<FormState>(INITIAL_FORM)
   const [result, setResult] = useState<CalculationResult | null>(null)
-  const [chartData, setChartData] = useState<readonly ChartDataPoint[]>([])
-  const [chartEdges, setChartEdges] = useState<readonly ChartEdge[]>([])
+  const [chartData, setChartData] = useState<readonly Record<string, number>[]>([])
+  const [chartElements, setChartElements] = useState<readonly string[]>([])
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
@@ -83,7 +74,7 @@ export function AbsorptionTab() {
     setError(null)
     setResult(null)
     setChartData([])
-    setChartEdges([])
+    setChartElements([])
     setLoading(true)
 
     try {
@@ -189,39 +180,16 @@ export function AbsorptionTab() {
       }
       setResult(calcResult)
 
-      // 12. Generate chart data using first element's energy grid
+      // 12. Generate per-element chart data for muR and transmission curves
       const symbols = Object.keys(composition)
-      const firstSymbol = symbols[0]
-      const referenceData = muData[firstSymbol]
-
-      const points: ChartDataPoint[] = []
-      for (const point of referenceData.data) {
-        try {
-          const compMu = calcCompoundMu(fractions, muData, point.energy_eV)
-          points.push({
-            energy_eV: point.energy_eV,
-            mu_over_rho: compMu,
-          })
-        } catch {
-          // Skip energy points that fail interpolation
-        }
-      }
-      setChartData(points)
-
-      // Collect all edges from all elements
-      const edges: ChartEdge[] = []
-      for (const symbol of symbols) {
-        const elMu = muData[symbol]
-        if (elMu) {
-          for (const edgeEnergy of elMu.edges) {
-            edges.push({
-              energy_eV: edgeEnergy,
-              label: `${symbol} ${edgeEnergy.toFixed(0)} eV`,
-            })
-          }
-        }
-      }
-      setChartEdges(edges)
+      const perElementData = buildPerElementChartData(
+        fractions,
+        muData,
+        packed_density,
+        capillaryRadius,
+      )
+      setChartData(perElementData)
+      setChartElements(symbols)
     } catch (err) {
       if (err instanceof FormulaError) {
         setError(`Formula error at position ${err.position}: ${err.message}`)
@@ -235,10 +203,10 @@ export function AbsorptionTab() {
     }
   }, [form])
 
-  const currentEnergy_eV =
+  const currentEnergy_keV =
     form.energyUnit === 'keV'
-      ? parseFloat(form.energyValue) * 1000
-      : (HC_KEV_ANGSTROM / parseFloat(form.energyValue)) * 1000
+      ? parseFloat(form.energyValue)
+      : HC_KEV_ANGSTROM / parseFloat(form.energyValue)
 
   return (
     <div className="flex flex-col lg:flex-row gap-6">
@@ -455,9 +423,9 @@ export function AbsorptionTab() {
         {chartData.length > 0 && (
           <EnergyChart
             data={chartData}
-            edges={chartEdges}
-            currentEnergy_eV={
-              isNaN(currentEnergy_eV) ? undefined : currentEnergy_eV
+            elements={chartElements}
+            currentEnergy_keV={
+              isNaN(currentEnergy_keV) ? undefined : currentEnergy_keV
             }
           />
         )}
