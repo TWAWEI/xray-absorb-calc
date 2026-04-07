@@ -201,26 +201,26 @@ export function AbsorptionTab() {
       {/* Input form */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl">
         <div>
-          <label className="block text-sm text-[#5A6B63] mb-1">
+          <label className="block text-sm text-[#7A5A50] mb-1">
             Chemical Formula
           </label>
           <input
             type="text"
             value={form.formula}
             onChange={(e) => handleChange('formula', e.target.value)}
-            className="w-full w-full bg-white border border-[#A5BFAF] rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:border-[#4EBC97]"
+            className="w-full w-full bg-white border border-[#FFB899] rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:border-[#FF378F]"
             placeholder="e.g. CaCO3, Fe2O3"
           />
         </div>
 
         <div>
-          <label className="block text-sm text-[#5A6B63] mb-1">Energy</label>
+          <label className="block text-sm text-[#7A5A50] mb-1">Energy</label>
           <div className="flex gap-2">
             <input
               type="text"
               value={form.energyValue}
               onChange={(e) => handleChange('energyValue', e.target.value)}
-              className="flex-1 w-full bg-white border border-[#A5BFAF] rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:border-[#4EBC97]"
+              className="flex-1 w-full bg-white border border-[#FFB899] rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:border-[#FF378F]"
               placeholder="30"
             />
             <button
@@ -230,7 +230,7 @@ export function AbsorptionTab() {
                   form.energyUnit === 'keV' ? 'Angstrom' : 'keV',
                 )
               }
-              className="px-3 py-2 bg-[#F0EDEB] border border-[#A5BFAF] rounded-lg text-sm text-gray-700 hover:bg-[#DFC1BF] transition-colors"
+              className="px-3 py-2 bg-[#FFF5F0] border border-[#FFB899] rounded-lg text-sm text-gray-700 hover:bg-[#FFD0C0] transition-colors"
             >
               {form.energyUnit}
             </button>
@@ -238,26 +238,26 @@ export function AbsorptionTab() {
         </div>
 
         <div>
-          <label className="block text-sm text-[#5A6B63] mb-1">
+          <label className="block text-sm text-[#7A5A50] mb-1">
             Estimated Density (g/cm³)
           </label>
           <input
             type="text"
             value={form.density}
             onChange={(e) => handleChange('density', e.target.value)}
-            className="w-full w-full bg-white border border-[#A5BFAF] rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:border-[#4EBC97]"
+            className="w-full w-full bg-white border border-[#FFB899] rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:border-[#FF378F]"
             placeholder="2.71"
           />
         </div>
 
         <div>
-          <label className="block text-sm text-[#5A6B63] mb-1">
+          <label className="block text-sm text-[#7A5A50] mb-1">
             Sample Size Mode
           </label>
           <select
             value={form.sizeMode}
             onChange={(e) => handleChange('sizeMode', e.target.value)}
-            className="w-full bg-white border border-[#A5BFAF] rounded-lg px-3 py-2 text-sm text-gray-700 focus:outline-none focus:border-[#4EBC97]"
+            className="w-full bg-white border border-[#FFB899] rounded-lg px-3 py-2 text-sm text-gray-700 focus:outline-none focus:border-[#FF378F]"
           >
             <option value="radius">Radius (mm)</option>
             <option value="diameter">Thickness (Diameter in mm)</option>
@@ -265,26 +265,26 @@ export function AbsorptionTab() {
         </div>
 
         <div>
-          <label className="block text-sm text-[#5A6B63] mb-1">
+          <label className="block text-sm text-[#7A5A50] mb-1">
             {form.sizeMode === 'radius' ? 'Sample Radius (mm)' : 'Sample Thickness (mm)'}
           </label>
           <input
             type="text"
             value={form.sizeValue}
             onChange={(e) => handleChange('sizeValue', e.target.value)}
-            className="w-full bg-white border border-[#A5BFAF] rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:border-[#4EBC97]"
+            className="w-full bg-white border border-[#FFB899] rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:border-[#FF378F]"
             placeholder={form.sizeMode === 'radius' ? '0.4' : '0.8'}
           />
         </div>
 
         <div>
-          <label className="block text-sm text-[#5A6B63] mb-1">
+          <label className="block text-sm text-[#7A5A50] mb-1">
             Sample Density or Packing Fraction
           </label>
           <select
             value={form.densityMode}
             onChange={(e) => handleChange('densityMode', e.target.value)}
-            className="w-full bg-white border border-[#A5BFAF] rounded-lg px-3 py-2 text-sm text-gray-700 focus:outline-none focus:border-[#4EBC97]"
+            className="w-full bg-white border border-[#FFB899] rounded-lg px-3 py-2 text-sm text-gray-700 focus:outline-none focus:border-[#FF378F]"
           >
             <option value="packing">Packing Fraction (0-1)</option>
             <option value="density">Sample Density (g/cm³)</option>
@@ -292,14 +292,14 @@ export function AbsorptionTab() {
         </div>
 
         <div>
-          <label className="block text-sm text-[#5A6B63] mb-1">
+          <label className="block text-sm text-[#7A5A50] mb-1">
             {form.densityMode === 'packing' ? 'Packing Fraction (0-1)' : 'Sample Density (g/cm³)'}
           </label>
           <input
             type="text"
             value={form.densityModeValue}
             onChange={(e) => handleChange('densityModeValue', e.target.value)}
-            className="w-full bg-white border border-[#A5BFAF] rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:border-[#4EBC97]"
+            className="w-full bg-white border border-[#FFB899] rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:border-[#FF378F]"
             placeholder={form.densityMode === 'packing' ? '0.6' : '1.63'}
           />
         </div>
@@ -307,13 +307,13 @@ export function AbsorptionTab() {
         <button
           onClick={handleCalculate}
           disabled={loading}
-          className="w-full py-2 bg-[#4EBC97] text-white rounded-lg hover:bg-[#6BBD9F] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full py-2 bg-[#FF378F] text-white rounded-lg hover:bg-[#FF4977] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {loading ? 'Calculating...' : 'Calculate'}
         </button>
 
         {error && (
-          <div className="bg-[#FCC0C7]/20 border border-[#e55] rounded-lg p-3 text-sm text-red-600">
+          <div className="bg-[#FFF0ED] border border-[#FF5B5F] rounded-lg p-3 text-sm text-red-600">
             {error}
           </div>
         )}
@@ -323,7 +323,7 @@ export function AbsorptionTab() {
       <div className="space-y-4">
         {result && (
           <>
-            <p className="text-xs text-[#4EBC97] tracking-wider font-semibold">
+            <p className="text-xs text-[#FF378F] tracking-wider font-semibold">
               Material Properties
             </p>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -341,8 +341,8 @@ export function AbsorptionTab() {
 
             {result.packed_density !== undefined && result.muR !== undefined && result.cylindrical_transmission !== undefined && (
               <>
-                <div className="border-t border-[#DFC1BF] my-2" />
-                <p className="text-xs text-[#4EBC97] tracking-wider font-semibold">
+                <div className="border-t border-[#FFD4C0] my-2" />
+                <p className="text-xs text-[#FF378F] tracking-wider font-semibold">
                   Capillary Geometry
                 </p>
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -371,15 +371,15 @@ export function AbsorptionTab() {
               </>
             )}
 
-            <div className="bg-[#F0EDEB] border border-[#DFC1BF] rounded-lg p-4">
-              <p className="text-xs text-[#4EBC97] tracking-wider font-semibold mb-2">
+            <div className="bg-[#FFF5F0] border border-[#FFD4C0] rounded-lg p-4">
+              <p className="text-xs text-[#FF378F] tracking-wider font-semibold mb-2">
                 Weight Fractions
               </p>
               <div className="flex flex-wrap gap-3">
                 {Object.entries(result.weight_fractions).map(
                   ([symbol, frac]) => (
                     <span key={symbol} className="text-sm font-mono">
-                      <span className="text-[#5A6B63]">{symbol}:</span>{' '}
+                      <span className="text-[#7A5A50]">{symbol}:</span>{' '}
                       <span className="text-gray-900">
                         {(frac * 100).toFixed(2)}%
                       </span>

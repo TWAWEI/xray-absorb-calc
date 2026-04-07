@@ -26,11 +26,11 @@ export function EdgeLookupTab() {
     <div className="space-y-6">
       <PeriodicTable onSelectElement={setSelectedElement} selectedElement={selectedElement} />
       {selectedElement && edges.length > 0 && (
-        <div className="bg-[#F0EDEB] border border-[#DFC1BF] rounded-lg p-4">
-          <h3 className="text-lg font-bold text-[#4EBC97] mb-3">{selectedElement} — Absorption Edges</h3>
+        <div className="bg-[#FFF5F0] border border-[#FFD4C0] rounded-lg p-4">
+          <h3 className="text-lg font-bold text-[#FF378F] mb-3">{selectedElement} — Absorption Edges</h3>
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-[#5A6B63] border-b border-[#A5BFAF]">
+              <tr className="text-[#FF378F] border-b border-[#FFB899]">
                 <th className="text-left py-2">Edge</th>
                 <th className="text-right py-2">Energy (eV)</th>
                 <th className="text-right py-2">Energy (keV)</th>
@@ -39,7 +39,7 @@ export function EdgeLookupTab() {
             </thead>
             <tbody>
               {edges.map((edge) => (
-                <tr key={edge.edge} className="border-b border-[#E8E4E1]">
+                <tr key={edge.edge} className="border-b border-[#FFE8E0]">
                   <td className="py-2 font-mono text-gray-900">{edge.edge}</td>
                   <td className="text-right font-mono text-gray-900">{edge.energy_eV.toFixed(2)}</td>
                   <td className="text-right font-mono text-gray-900">{(edge.energy_eV / 1000).toFixed(4)}</td>

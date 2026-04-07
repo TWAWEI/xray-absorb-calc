@@ -87,7 +87,7 @@ export function EnergyChart({ data, elements, currentEnergy_keV }: AbsorptionCha
   const seriesKeys = [...elements, 'Total'] as const
 
   return (
-    <div className="bg-white rounded-lg border border-[#DFC1BF] p-4">
+    <div className="bg-white rounded-lg border border-[#FFD4C0] p-4">
       <div className="flex flex-col xl:flex-row gap-4">
         {/* Left chart: muR vs Energy */}
         <div className="flex-1 min-w-0">
@@ -254,7 +254,7 @@ export function EnergyChart({ data, elements, currentEnergy_keV }: AbsorptionCha
             <select
               value={xScale}
               onChange={(e) => setXScale(e.target.value as XAxisScale)}
-              className="w-full bg-white border border-[#A5BFAF] rounded px-2 py-1 text-sm text-gray-700 focus:outline-none focus:border-[#4EBC97]"
+              className="w-full bg-white border border-[#FFB899] rounded px-2 py-1 text-sm text-gray-700 focus:outline-none focus:border-[#FF378F]"
             >
               <option value="log">Log</option>
               <option value="linear">Linear</option>
